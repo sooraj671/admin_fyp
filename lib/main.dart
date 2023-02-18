@@ -1,24 +1,57 @@
+
+
+import 'package:file_upload_web/pages/home.dart';
+import 'package:file_upload_web/pages/sign_in.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'profile/view/profile_screen.dart';
+import 'blocs/admin_bloc.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({Key key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'File Upload Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AdminBloc>(create: (context) => AdminBloc()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Muli',
+          appBarTheme: AppBarTheme(
+            color: Colors.white,
+            textTheme: TextTheme(
+              headline6: TextStyle(
+                fontFamily: 'Muli',
+                color: Colors.grey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 18,
+              ),
+            ),
+            elevation: 0,
+            actionsIconTheme: IconThemeData(
+              color: Colors.grey[900],
+            ),
+            iconTheme: IconThemeData(color: Colors.grey[900]),
+          ),
+        ),
+        home: MyApp1(),
       ),
-      home: ProfileScreen(),
     );
+  }
+}
+
+class MyApp1 extends StatelessWidget {
+  const MyApp1({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final ab = context.watch<AdminBloc>();
+    return ab.isSignedIn == true ? SignInPage() : HomePage();
   }
 }
