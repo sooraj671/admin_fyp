@@ -1,7 +1,13 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:file_upload_web/pages/EditCustomerPage.dart';
+import 'package:file_upload_web/pages/profile_screen.dart';
 
 import 'AllCustomers.dart';
 // import 'AllProducts.dart';
 import 'AddProduct.dart';
+import 'AllProducts.dart';
+import 'EditProductPage.dart';
 import 'edit_content.dart';
 import 'token.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +22,6 @@ import 'TailorDetails.dart';
 import 'CustomerDatails.dart';
 
 class CustomersPage extends StatefulWidget {
-
-
   @override
   _CustomersPageState createState() => _CustomersPageState();
 }
@@ -29,9 +33,9 @@ class _CustomersPageState extends State<CustomersPage> {
     print("checking");
     return DataRow(
       cells: <DataCell>[
-        DataCell(Text(result.name)),
-        DataCell(Text(result.email)),
+       DataCell(Text(result.name)),
         DataCell(Text(result.number.toString())),
+        DataCell(Image.network(result.imgUrl)),
         // DataCell(ElevatedButton(
         //   child: new Text('edit '),
         //   style: ElevatedButton.styleFrom(
@@ -39,13 +43,34 @@ class _CustomersPageState extends State<CustomersPage> {
         //   ),
         //   onPressed: () {/** */},
         // )),
-        DataCell(ElevatedButton(
-          child: new Text('delete '),
-          style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 74, 179, 77),
-          ),
-          onPressed: () {/** */},
-        ))
+        DataCell(
+          IconButton(
+              onPressed: () {
+                var index;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditCustomerPage(allCustomers[index])));
+              },
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.teal,
+              )),
+        ),
+        DataCell(
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  var index;
+                  allCustomers.removeAt(index);
+                });
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.teal,
+              )),
+        )
       ],
     );
   }
@@ -56,51 +81,109 @@ class _CustomersPageState extends State<CustomersPage> {
         appBar: AppBar(
           title: Text('Manage Customer'),
           backgroundColor: Color.fromARGB(255, 74, 179, 77),
+          // actions: [
+          //   ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => ProfileScreen()));
+          //     },
+          //     child: Text("Add New"),
+          //   )
+          // ],
         ),
-        body: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                // r
-                DataTable(
-                  columns: [
-                    DataColumn(
-                        label: Text('Name',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Email',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Number',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('category',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('image',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('edit',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('delete',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                  ],
-                  rows: List.generate(allCustomers.length,
-                      (index) => _getDataRow(allCustomers[index])),
+        body: ListView.builder(
+            itemCount: allCustomers.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  leading: Image.network(allTailors[index].imgUrl),
+                  title: Text(allCustomers[index].name ?? ''),
+                  subtitle: Text(
+                      "number: " + allCustomers[index].number.toString() ?? ''),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditCustomerPage(allCustomers[index])));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.teal,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              allCustomers.removeAt(index);
+                            });
+                            // _deleteFormDialog(context, _userList[index].id);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ))
+                    ],
+                  ),
                 ),
-              ],
-            )));
+              );
+            })
+
+ );
   }
 }
 
+
+
+        // body: Padding(
+        //     padding: EdgeInsets.all(10),
+        //     child: Column(
+        //       children: <Widget>[
+        //         // r
+        //         DataTable(
+        //           columns: [
+        //             DataColumn(
+        //                 label: Text('Name',
+        //                     style: TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold))),
+        //             DataColumn(
+        //                 label: Text('Email',
+        //                     style: TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold))),
+        //             DataColumn(
+        //                 label: Text('Number',
+        //                     style: TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold))),
+        //             // DataColumn(
+        //             //     label: Text('category',
+        //             //         style: TextStyle(
+        //             //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //             // DataColumn(
+        //             //     label: Text('image',
+        //             //         style: TextStyle(
+        //             //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //             // DataColumn(
+        //             //     label: Text('edit',
+        //             //         style: TextStyle(
+        //             //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //             DataColumn(
+        //                 label: Text('edit',
+        //                     style: TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold))),
+        //             DataColumn(
+        //                 label: Text('delete',
+        //                     style: TextStyle(
+        //                         fontSize: 18, fontWeight: FontWeight.bold))),
+        //           ],
+        //           rows: List.generate(allCustomers.length,
+        //               (index) => _getDataRow(allCustomers[index])),
+        //         ),
+        //       ],
+        //     )));
+  
 
 // import 'package:admin/blocs/admin_bloc.dart';
 // import 'endpoints.dart';

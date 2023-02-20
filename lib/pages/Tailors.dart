@@ -1,6 +1,13 @@
-
 // import 'AllProducts.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:file_upload_web/pages/EditTailorPage.dart';
+import 'package:file_upload_web/pages/TailorProfileScreen.dart';
+import 'package:file_upload_web/pages/profile_screen.dart';
+
 import 'AddProduct.dart';
+import 'AllProducts.dart';
+import 'EditProductPage.dart';
 import 'edit_content.dart';
 import 'token.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +21,6 @@ import 'AllTailors.dart';
 import 'TailorDetails.dart';
 
 class TailorsPage extends StatefulWidget {
-
-
   @override
   _TailorsPageState createState() => _TailorsPageState();
 }
@@ -27,8 +32,9 @@ class _TailorsPageState extends State<TailorsPage> {
     return DataRow(
       cells: <DataCell>[
         DataCell(Text(result.name)),
-        DataCell(Text(result.email)),
         DataCell(Text(result.number.toString())),
+        DataCell(Image.network(result.imgUrl)),
+
         // DataCell(ElevatedButton(
         //   child: new Text('edit '),
         //   style: ElevatedButton.styleFrom(
@@ -36,13 +42,34 @@ class _TailorsPageState extends State<TailorsPage> {
         //   ),
         //   onPressed: () {/** */},
         // )),
-        DataCell(ElevatedButton(
-          child: new Text('delete '),
-          style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 74, 179, 77),
-          ),
-          onPressed: () {/** */},
-        ))
+        DataCell(
+          IconButton(
+              onPressed: () {
+                var index;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditTailorPage(allTailors[index])));
+              },
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.teal,
+              )),
+        ),
+        DataCell(
+          IconButton(
+              onPressed: () {
+                var index;
+                setState(() {
+                  allTailors.removeAt(index);
+                });
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.teal,
+              )),
+        )
       ],
     );
   }
@@ -53,82 +80,146 @@ class _TailorsPageState extends State<TailorsPage> {
         appBar: AppBar(
           title: Text('Manage Tailors'),
           backgroundColor: Color.fromARGB(255, 74, 179, 77),
+          // actions: [
+          //   ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.push(
+          //           context,
+          //           MaterialPageRoute(
+          //               builder: (context) => TailorProfileScreen()));
+          //     },
+          //     child: Text("Add New"),
+          //   )
+          // ],
         ),
-        body: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                // Padding(
-                // padding: EdgeInsets.all(15),
-                // child: new ButtonBar(
-                //   mainAxisSize: MainAxisSize.min,
-                //   children: <Widget>[
-                //     // ElevatedButton(
-                //     //   child: new Text('All Tailors'),
-                //     //   // color: Colors.lightGreen,
-                //     //   style: ElevatedButton.styleFrom(
-                //     //     primary: Color.fromARGB(255, 74, 179, 77),
-                //     //   ),
-                //     //   onPressed: () async {
-                //     //     // final Uri url = Uri.parse(baseURL + tailor);
-                //     //     // await getTailors(url);
-                //     //   },
-                //     // ),
-                //     // ElevatedButton(
-                //     //   child: Text('Add Tailors'),
-                //     //   // color: Colors.lightGreen,
-                //     //   style: ElevatedButton.styleFrom(
-                //     //     primary: Color.fromARGB(255, 74, 179, 77),
-                //     //   ),
-                //     //   onPressed: () {
-                //     //     // Navigator.push(
-                //     //     //     context,
-                //     //     //     MaterialPageRoute(
-                //     //     //         builder: (context) => NextPage()));
-                //     //   },
-                //     // ),
-                //   ],
-                // ),
-                //),
-                DataTable(
-                  columns: [
-                    DataColumn(
-                        label: Text('Name',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Email',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Number',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('category',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('image',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('edit',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('delete',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                  ],
-                  rows: List.generate(allTailors.length,
-                      (index) => _getDataRow(allTailors[index])),
+        body: ListView.builder(
+            itemCount: allTailors.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  leading: Image.network(allTailors[index].imgUrl),
+                  title: Text(allTailors[index].name ?? ''),
+                  subtitle: Text(
+                      "number: " + allTailors[index].number.toString() ?? ''),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditTailorPage(allTailors[index])));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.teal,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              allTailors.removeAt(index);
+                            });
+                            // _deleteFormDialog(context, _userList[index].id);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ))
+                    ],
+                  ),
                 ),
-              ],
-            )));
+              );
+            })
+
+        // body: Padding(
+        //     padding: EdgeInsets.all(10),
+        //     child: Column(
+        //       children: <Widget>[
+        // Padding(
+        // padding: EdgeInsets.all(15),
+        // child: new ButtonBar(
+        //   mainAxisSize: MainAxisSize.min,
+        //   children: <Widget>[
+        // ElevatedButton(
+        //   child: new Text('All Tailors'),
+        //   // color: Colors.lightGreen,
+        //   style: ElevatedButton.styleFrom(
+        //     primary: Color.fromARGB(255, 74, 179, 77),
+        //   ),
+        //   onPressed: () async {
+        //     // final Uri url = Uri.parse(baseURL + tailor);
+        //     // await getTailors(url);
+        //   },
+        // ),
+        // ElevatedButton(
+        //   child: Text('Add Tailors'),
+        //   // color: Colors.lightGreen,
+        //   style: ElevatedButton.styleFrom(
+        //     primary: Color.fromARGB(255, 74, 179, 77),
+        //   ),
+        //   onPressed: () {
+        //     // Navigator.push(
+        //     //     context,
+        //     //     MaterialPageRoute(
+        //     //         builder: (context) => NextPage()));
+        //   },
+        // ),
+        //     ],
+        //   ),
+        // ),
+        //     DataTable(
+        //       // ignore: prefer_const_literals_to_create_immutables
+        //       columns: [
+        //         DataColumn(
+        //             label: Text('Name',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         DataColumn(
+        //             label: Text('Email',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // ignore: prefer_const_constructors
+        //         DataColumn(
+        //             label: Text('Number',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('category',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('image',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('edit',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('delete',
+        //         //         style: TextStyle(
+        //         //
+        //         //      fontSize: 18, fontWeight: FontWeight.bold))),
+
+        //         DataColumn(
+        //             label: Text('edit',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         DataColumn(
+        //             label: Text('delete',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //       ],
+        //       rows: List.generate(allTailors.length,
+        //           (index) => _getDataRow(allTailors[index])),
+        //     ),
+        //   ],
+        // )));
+        );
   }
 }
-
 
 // import 'package:admin/blocs/admin_bloc.dart';
 // import 'endpoints.dart';
@@ -205,16 +296,16 @@ class _TailorsPageState extends State<TailorsPage> {
 //         .toList();
 //   }
 // DataCell _createTitleCell(bookTitle) {
-//     return DataCell(_isEditMode == true ? 
-//             TextFormField(initialValue: bookTitle, 
-//             style: TextStyle(fontSize: 14)) 
+//     return DataCell(_isEditMode == true ?
+//             TextFormField(initialValue: bookTitle,
+//             style: TextStyle(fontSize: 14))
 //             : Text(bookTitle));
 //   }
 // Column _createCheckboxField() {
 //     return Column(
 //       children: [
 //         Center(
-//           child: 
+//           child:
 //              ElevatedButton(
 //                   child: const Text('Show all tailors'),
 //                   onPressed: () {
@@ -236,18 +327,11 @@ class _TailorsPageState extends State<TailorsPage> {
 // //   var imageUrlCtrl = TextEditingController();
 // //   var scaffoldKey = GlobalKey<ScaffoldState>();
 
-
-
-  
 // //   String date;
 // //   String timestamp;
 // //   int loves;
 // //   var categorySelection;
 // //   bool uploadStarted = false;
-
-
-
-
 
 // //   void handleSubmit() async {
 // //     final AdminBloc ab = Provider.of<AdminBloc>(context, listen: false);
@@ -266,19 +350,12 @@ class _TailorsPageState extends State<TailorsPage> {
 // //           setState(()=> uploadStarted = false);
 // //           openDialog(context, 'Uploaded Successfully', '');
 // //           clearTextFeilds();
-          
-          
+
 // //         });
 // //       }
 // //     }
 // //     }
 // //   }
-
-
-
-
-
-
 
 // //   Future getDate() async {
 // //     DateTime now = DateTime.now();
@@ -288,10 +365,8 @@ class _TailorsPageState extends State<TailorsPage> {
 // //       date = _date;
 // //       timestamp = _timestamp;
 // //     });
-    
+
 // //   }
-
-
 
 // //   Future saveToDatabase() async {
 
@@ -304,17 +379,11 @@ class _TailorsPageState extends State<TailorsPage> {
 // //     // });
 // //   }
 
-  
-
-
 // //   clearTextFeilds() {
-    
+
 // //     imageUrlCtrl.clear();
 // //     FocusScope.of(context).unfocus();
 // //   }
-
-
-
 
 // //   handlePreview() async{
 // //     if (formKey.currentState.validate()) {
@@ -323,19 +392,16 @@ class _TailorsPageState extends State<TailorsPage> {
 // //     }
 // //   }
 
-
-
-
 // //   @override
 // //   Widget build(BuildContext context) {
 // //     double w = MediaQuery.of(context).size.width;
 // //     double h = MediaQuery.of(context).size.height;
 // //     return Scaffold(
-      
+
 // //       backgroundColor: Colors.grey[200],
 // //       key: scaffoldKey,
 // //       body: Container(
-        
+
 // //     //     margin: EdgeInsets.only(left: 30, right: 30, top: 30),
 // //     //     padding: EdgeInsets.only(
 // //     //       left: w * 0.05,
@@ -364,9 +430,7 @@ class _TailorsPageState extends State<TailorsPage> {
 
 // //     //             // categoryDropdown(),
 
-                
 // //     //             SizedBox(height: 20,),
-
 
 // //     //             TextFormField(
 // //     //               decoration: inputDecoration('Enter Image Url', 'Image', imageUrlCtrl),
@@ -375,22 +439,17 @@ class _TailorsPageState extends State<TailorsPage> {
 // //     //                 if (value.isEmpty) return 'Value is empty';
 // //     //                 return null;
 // //     //               },
-                  
+
 // //     //             ),
-                
-                
-               
 
 // //     //             SizedBox(height: 100,),
-
 
 // //     //               Row(
 // //     //                   mainAxisAlignment: MainAxisAlignment.end,
 // //     //                   children: <Widget>[
-                        
-                       
+
 // //     //                     TextButton.icon(
-                          
+
 // //     //                       icon: Icon(Icons.remove_red_eye, size: 25, color: Color.fromARGB(255, 100, 216, 54),),
 // //     //                       label: Text('Preview', style: TextStyle(
 // //     //                         fontWeight: FontWeight.w400,
@@ -420,9 +479,9 @@ class _TailorsPageState extends State<TailorsPage> {
 // //     //                     ),
 // //     //                     onPressed: () async{
 // //     //                       handleSubmit();
-                          
+
 // //     //                     })
-                      
+
 // //     //                   ),
 // //     //             SizedBox(
 // //     //               height: 200,
@@ -432,11 +491,6 @@ class _TailorsPageState extends State<TailorsPage> {
 // //       ),
 // //     );
 // //   }
-
-
-
-
-
 
 // //   Widget categoryDropdown() {
 // //     final AdminBloc ab = Provider.of<AdminBloc>(context, listen: false);
@@ -474,7 +528,5 @@ class _TailorsPageState extends State<TailorsPage> {
 // //               );
 // //             }).toList()));
 // //   }
-
-
 
 //  }

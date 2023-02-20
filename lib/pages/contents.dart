@@ -1,8 +1,5 @@
 import 'dart:developer';
-
-
 import 'package:file_upload_web/pages/profile_screen.dart';
-
 import 'AllProducts.dart';
 import 'EditProductPage.dart';
 import 'AddProduct.dart';
@@ -26,14 +23,6 @@ class ContentsPage extends StatefulWidget {
 }
 
 class _ContentsPageState extends State<ContentsPage> {
-  // var body = {
-  //   "name": "shawl",
-  //   "price": 1000,
-  //   "description": "this shawl is used throughout pakistan in winter",
-  //   "category": "common",
-  //   "imgUrl": "any image here either jpeg or png"
-  // };
-
   DataRow _getDataRow(result, index) {
     print("Size: " + allProducts.length.toString());
     print("inside get data" + result.name);
@@ -123,8 +112,6 @@ class _ContentsPageState extends State<ContentsPage> {
                 ),
               );
             }));
-
-
   }
 
   Future<bool> deleteProducts(Uri uri) async {
@@ -140,5 +127,4 @@ class _ContentsPageState extends State<ContentsPage> {
       print(response.statusCode);
     }
   }
-
 }

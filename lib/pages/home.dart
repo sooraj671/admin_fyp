@@ -33,7 +33,6 @@ class _HomePageState extends State<HomePage> {
     ' Tailors',
     // 'Categories',
     ' Riders',
-    'Orders',
     ' Customers'
   ];
 
@@ -85,7 +84,6 @@ class _HomePageState extends State<HomePage> {
                     tab(titles[1], icons[1]),
                     tab(titles[2], icons[2]),
                     tab(titles[3], icons[3]),
-                    tab(titles[4], icons[4]),
                     // tab(titles[5], icons[5])
                   ],
                   contents: <Widget>[
@@ -94,7 +92,6 @@ class _HomePageState extends State<HomePage> {
                     TailorsPage(),
                     // CategoryPage(),
                     RidersPage(),
-                    OrdersPage(),
                     CustomersPage()
                   ],
                 ),

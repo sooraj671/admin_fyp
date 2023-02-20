@@ -155,24 +155,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10.00,
-                                  top: 16.00,
-                                  right: 10.00,
-                                ),
-                                child: Text(
-                                  "Noah Arielken",
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    color: Colors.grey.shade50,
-                                    fontSize: 20,
-                                    fontFamily: 'Ubuntu',
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(
+                              //     left: 10.00,
+                              //     top: 16.00,
+                              //     right: 10.00,
+                              //   ),
+                              //   child: Text(
+                              //     "",
+                              //     overflow: TextOverflow.ellipsis,
+                              //     textAlign: TextAlign.left,
+                              //     style: TextStyle(
+                              //       color: Colors.grey.shade50,
+                              //       fontSize: 20,
+                              //       fontFamily: 'Ubuntu',
+                              //       fontWeight: FontWeight.w700,
+                              //     ),
+                              //   ),
+                              // ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                   left: 10.00,
@@ -181,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   bottom: 48.00,
                                 ),
                                 child: Text(
-                                  "Visual Communication Design",
+                                  "choose image",
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(
@@ -271,7 +271,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     //passing file bytes and file name for API call
 
                                     ApiClient.uploadFile(
-                                        _paths.first.bytes, _paths.first.name, myController[0].text,
+                                        _paths.first.bytes,
+                                        _paths.first.name,
+                                        myController[0].text,
                                         myController[1].text,
                                         myController[2].text,
                                         myController[3].text);

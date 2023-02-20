@@ -27,43 +27,34 @@ String imgUri =
 Future<bool> getCustomers(Uri uri) async {
   print("iniside Customers");
 
-  try {
+  
     var response = await http.get(uri, headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer $token',
-    });
-    print("hello");
-    print("a");
-    List<dynamic> data = json.decode(response.body);
-    print("b");
-    // List<dynamic> data = map;
-    print("data here");
-    print(data);
-    // print("entryyyyyyy");
-    print(data);
+    // 'Content-Type': 'application/json',
+    // 'Accept': 'application/json',
+    // 'Authorization': 'Bearer $token',
+  });
+      Map<String, dynamic> map = json.decode(response.body);
+  List<dynamic> data = map["result"];
+   
     data.forEach((entry) {
-      String name = entry["name"];
-      String email = entry["email"];
-      String number = entry["contactNumber"];
-      // String number = entry["contactNumber"];
-
-      // String complete = imgUri+img;
-
-      print(name);
-      print(email);
-      // print(number);
-      allCustomers.add(Customer(
-        name: name,
-        email: email,
-        number: number,
-      ));
-      print(name);
+      
+      
+      allCustomers.add(Customer.fromJson(entry));
     });
-  } catch (error) {
-    print("nigeeta");
-    print(error);
+
+  if (response.statusCode == 200) {
+    print("success");
+    return true;
+  } else {
+    print(response.body);
+    return false;
   }
+}
+
+deletePro(index) {
+  allCustomers.removeAt(index);
+}
+  
   // if (response.statusCode == 200) {
   //   print("suuuuuuuuccess");
   //   print(response);
@@ -72,4 +63,4 @@ Future<bool> getCustomers(Uri uri) async {
   //   print(response.body);
   //   return false;
   // }
-}
+

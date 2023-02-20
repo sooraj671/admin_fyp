@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-
 import 'package:file_upload_web/pages/profile_screen.dart';
 
 import '../blocs/admin_bloc.dart';
@@ -52,19 +51,17 @@ class _SignInPageState extends State<SignInPage> {
     getTailors(urlTailor);
 
     Uri urlRider = Uri.parse(baseURL + rider);
-    print("before");
-    getRiders(urlRider);
-    print("Ramoooooooooo");
+    
+    await getRiders(urlRider);
+
     print(urlRider);
 
     Uri urlCustomer = Uri.parse(baseURL + customer);
     getCustomers(urlCustomer);
-    print("url customer working");
     print(urlCustomer);
 
     Uri urlOrder = Uri.parse(baseURL + admin + order);
     getOrders(urlOrder);
-    print("url order working");
     print(urlOrder);
 
 //     var body = {
@@ -161,8 +158,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   validator: (String value) {
                     String _adminPassword = ab.adminPass;
-                    if (value.length == 0)
-                      return "Email can't be empty";
+                    if (value.length == 0) return "Email can't be empty";
 
                     return null;
                   },

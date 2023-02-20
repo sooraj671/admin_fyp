@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:file_upload_web/pages/EditRiderPage.dart';
+
+import 'AllProducts.dart';
 import 'AllRiders.dart';
-// import 'AllProducts.dart';
 import 'AddProduct.dart';
+import 'EditProductPage.dart';
 import 'edit_content.dart';
+import 'profile_screen.dart';
 import 'token.dart';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'my_functions.dart';
@@ -30,7 +34,8 @@ class _RidersPageState extends State<RidersPage> {
     return DataRow(
       cells: <DataCell>[
         DataCell(Text(result.name)),
-        DataCell(Text(result.email)),
+        DataCell(Text(result.number.toString())),
+        DataCell(Image.network(result.imgUrl)),
         // DataCell(Text(result.number.toString())),
         // DataCell(ElevatedButton(
         //   child: new Text('edit '),
@@ -39,13 +44,47 @@ class _RidersPageState extends State<RidersPage> {
         //   ),
         //   onPressed: () {/** */},
         // )),
-        DataCell(ElevatedButton(
-          child: new Text('delete '),
-          style: ElevatedButton.styleFrom(
-            primary: Color.fromARGB(255, 74, 179, 77),
-          ),
-          onPressed: () {/** */},
-        ))
+        DataCell(
+          IconButton(
+              onPressed: () {
+                var index;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditRiderPage(allRiders[index])));
+              },
+              icon: const Icon(
+                Icons.edit,
+                color: Colors.teal,
+              )),
+          // child: new Text('delete '),
+          // style: ElevatedButton.styleFrom(
+          //   primary: Color.fromARGB(255, 74, 179, 77),
+          // ),
+          // onPressed: () {/** */},
+
+          // ))
+        ),
+        DataCell(
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  var index;
+                  allRiders.removeAt(index);
+                });
+              },
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.teal,
+              )),
+          // child: new Text('delete '),
+          // style: ElevatedButton.styleFrom(
+          //   primary: Color.fromARGB(255, 74, 179, 77),
+          // ),
+          // onPressed: () {/** */},
+
+          // ))
+        )
       ],
     );
   }
@@ -56,79 +95,134 @@ class _RidersPageState extends State<RidersPage> {
         appBar: AppBar(
           title: Text('Manage Riders'),
           backgroundColor: Color.fromARGB(255, 74, 179, 77),
+          // actions: [
+          //   ElevatedButton(
+          //     onPressed: () {
+          //       Navigator.push(context,
+          //           MaterialPageRoute(builder: (context) => ProfileScreen()));
+          //     },
+          //     child: Text("Add New"),
+          //   )
+          // ],
         ),
-        body: Padding(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              children: <Widget>[
-                // Padding(
-                //   padding: EdgeInsets.all(15),
-                //   child: new ButtonBar(
-                //     mainAxisSize: MainAxisSize.min,
-                //     children: <Widget>[
-                //       ElevatedButton(
-                //         child: new Text('All Riders'),
-                //         // color: Colors.lightGreen,
-                //         style: ElevatedButton.styleFrom(
-                //           primary: Color.fromARGB(255, 74, 179, 77),
-                //         ),
-                //         onPressed: () async {
-                //           // final Uri url = Uri.parse(baseURL + tailor);
-                //           // await getTailors(url);
-                //         },
-                //       ),
-                //       ElevatedButton(
-                //         child: Text('Add Riders'),
-                //         // color: Colors.lightGreen,
-                //         style: ElevatedButton.styleFrom(
-                //           primary: Color.fromARGB(255, 74, 179, 77),
-                //         ),
-                //         onPressed: () {
-                //           // Navigator.push(
-                //           //     context,
-                //           //     MaterialPageRoute(
-                //           //         builder: (context) => NextPage()));
-                //         },
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                DataTable(
-                  columns: [
-                    DataColumn(
-                        label: Text('Name',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('Email',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('Number',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('category',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('image',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    // DataColumn(
-                    //     label: Text('edit',
-                    //         style: TextStyle(
-                    //             fontSize: 18, fontWeight: FontWeight.bold))),
-                    DataColumn(
-                        label: Text('delete',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold))),
-                  ],
-                  rows: List.generate(allRiders.length,
-                      (index) => _getDataRow(allRiders[index])),
+        body: ListView.builder(
+            itemCount: allRiders.length,
+            itemBuilder: (context, index) {
+              return Card(
+                child: ListTile(
+                  leading: Image.network(allRiders[index].imgUrl),
+                  title: Text(allRiders[index].name ?? ''),
+                  subtitle: Text(
+                      "number: " + allRiders[index].number.toString() ?? ''),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditRiderPage(allRiders[index])));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.teal,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              allRiders.removeAt(index);
+                            });
+                            // _deleteFormDialog(context, _userList[index].id);
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ))
+                    ],
+                  ),
                 ),
-              ],
-            )));
+              );
+            })
+
+        // body: Padding(
+        //     padding: EdgeInsets.all(10),
+        //     child: Column(
+        //       children: <Widget>[
+        // Padding(
+        //   padding: EdgeInsets.all(15),
+        //   child: new ButtonBar(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: <Widget>[
+        //       ElevatedButton(
+        //         child: new Text('All Riders'),
+        //         // color: Colors.lightGreen,
+        //         style: ElevatedButton.styleFrom(
+        //           primary: Color.fromARGB(255, 74, 179, 77),
+        //         ),
+        //         onPressed: () async {
+        //           // final Uri url = Uri.parse(baseURL + tailor);
+        //           // await getTailors(url);
+        //         },
+        //       ),
+        //       ElevatedButton(
+        //         child: Text('Add Riders'),
+        //         // color: Colors.lightGreen,
+        //         style: ElevatedButton.styleFrom(
+        //           primary: Color.fromARGB(255, 74, 179, 77),
+        //         ),
+        //         onPressed: () {
+        //           // Navigator.push(
+        //           //     context,
+        //           //     MaterialPageRoute(
+        //           //         builder: (context) => NextPage()));
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        //     DataTable(
+        //       columns: [
+        //         DataColumn(
+        //             label: Text('Name',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         DataColumn(
+        //             label: Text('Email',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('Number',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('category',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('image',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         // DataColumn(
+        //         //     label: Text('edit',
+        //         //         style: TextStyle(
+        //         //             fontSize: 18, fontWeight: FontWeight.bold))),
+        //         DataColumn(
+        //             label: Text('edit',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //         DataColumn(
+        //             label: Text('delete',
+        //                 style: TextStyle(
+        //                     fontSize: 18, fontWeight: FontWeight.bold))),
+        //       ],
+        //       rows: List.generate(allRiders.length,
+        //           (index) => _getDataRow(allRiders[index])),
+        //     ),
+        //   ],
+        // )));
+        );
   }
 }
 
