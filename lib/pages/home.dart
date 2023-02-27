@@ -6,11 +6,10 @@ import 'orders.dart';
 import 'categories.dart';
 import 'contents.dart';
 import 'data_info.dart';
-import 'sign_in.dart';
+import '../pages/sign_in.dart';
 import 'Tailors.dart';
 import 'Riders.dart';
 import 'users.dart';
-
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +44,17 @@ class _HomePageState extends State<HomePage> {
     LineIcons.users
   ];
 
-  Future handleLogOut() async {}
+  Future handleLogOut() async {
+
+  }
+  int _counter = 0;
+
+  void _refreshPage() {
+    setState(() {
+      // update the state to trigger a rebuild of the widget
+      _counter = 0;
+    });
+  }
 
   @override
   void initState() {
@@ -132,6 +141,7 @@ class _HomePageState extends State<HomePage> {
       ),
     ));
   }
+  
 
   Widget _appBar(ab) {
     return PreferredSize(
@@ -194,7 +204,14 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       fontSize: 16),
                 ),
-                onPressed: () => handleLogOut(),
+                // onPressed: () => handleLogOut(),
+                onPressed: () {
+            // Navigator.of(context).pushAndRemoveUntil(
+            //   // MaterialPageRoute(builder: (context) => handleSignIn()),
+            //   (Route<dynamic> route) => false,
+            //);
+            _refreshPage;
+          },
               ),
             ),
             SizedBox(
